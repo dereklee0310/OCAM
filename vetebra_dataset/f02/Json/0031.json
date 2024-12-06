@@ -1,1 +1,214 @@
-{"imagePath": "0031.png", "flags": {}, "imageWidth": 500, "imageHeight": 1200, "imageData": null, "version": "5.0.1", "shapes": [{"points": [[177.2, 10.5], [276.2, 11.5], [275.8, 53.5], [176.8, 52.5]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v0"}, {"points": [[184.3, 59.3], [269.3, 56.7], [270.7, 102.7], [185.7, 105.3]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v1"}, {"points": [[194.3, 108.8], [272.1, 103.3], [275.7, 155.2], [197.9, 160.7]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v2"}, {"points": [[193.9, 166.4], [275.6, 159.8], [280.1, 216.6], [198.4, 223.2]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v3"}, {"points": [[198.8, 232.4], [272.5, 225.8], [277.2, 277.6], [203.5, 284.2]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v4"}, {"points": [[200.2, 289.7], [282.7, 280.6], [288.8, 335.3], [206.3, 344.4]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v5"}, {"points": [[201.9, 348.7], [292.2, 337.8], [299.1, 395.3], [208.8, 406.2]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v6"}, {"points": [[207.7, 411.7], [299.1, 400.7], [306.3, 460.3], [214.9, 471.3]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v7"}, {"points": [[212.1, 473.7], [302.7, 464.6], [308.9, 526.3], [218.3, 535.4]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v8"}, {"points": [[215.6, 537.5], [312.4, 532.6], [315.4, 592.5], [218.6, 597.4]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v9"}, {"points": [[215.9, 608.5], [313.7, 601.6], [318.1, 664.5], [220.3, 671.4]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v10"}, {"points": [[218.4, 676.0], [321.3, 674.0], [322.6, 738.0], [219.7, 740.0]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v11"}, {"points": [[216.0, 754.7], [331.6, 751.3], [333.7, 820.8], [218.1, 824.3]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v12"}, {"points": [[213.4, 830.6], [332.3, 835.4], [329.6, 903.4], [210.7, 898.6]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v13"}, {"points": [[205.7, 905.3], [331.9, 919.2], [323.3, 996.7], [197.1, 982.8]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v14"}, {"points": [[191.4, 991.1], [324.1, 1009.8], [312.6, 1091.9], [179.9, 1073.2]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v15"}, {"points": [[174.7, 1086.5], [308.0, 1108.0], [293.7, 1196.6], [160.4, 1175.1]], "flag": {}, "group_id": null, "shape_type": "polygon", "label": "v16"}]}
+{
+    "imagePath": "0031.png",
+    "flags": {},
+    "imageWidth": 500,
+    "imageHeight": 1200,
+    "imageData": null,
+    "version": "5.0.1",
+    "shapes": [
+        {
+            "points": [
+                [177.2, 10.5],
+                [276.2, 11.5],
+                [275.8, 53.5],
+                [176.8, 52.5]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v0"
+        },
+        {
+            "points": [
+                [184.3, 59.3],
+                [269.3, 56.7],
+                [270.7, 102.7],
+                [185.7, 105.3]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v1"
+        },
+        {
+            "points": [
+                [194.3, 108.8],
+                [272.1, 103.3],
+                [275.7, 155.2],
+                [197.9, 160.7]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v2"
+        },
+        {
+            "points": [
+                [193.9, 166.4],
+                [275.6, 159.8],
+                [280.1, 216.6],
+                [198.4, 223.2]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v3"
+        },
+        {
+            "points": [
+                [198.8, 232.4],
+                [272.5, 225.8],
+                [277.2, 277.6],
+                [203.5, 284.2]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v4"
+        },
+        {
+            "points": [
+                [200.2, 289.7],
+                [282.7, 280.6],
+                [288.8, 335.3],
+                [206.3, 344.4]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v5"
+        },
+        {
+            "points": [
+                [201.9, 348.7],
+                [292.2, 337.8],
+                [299.1, 395.3],
+                [208.8, 406.2]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v6"
+        },
+        {
+            "points": [
+                [207.7, 411.7],
+                [299.1, 400.7],
+                [306.3, 460.3],
+                [214.9, 471.3]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v7"
+        },
+        {
+            "points": [
+                [212.1, 473.7],
+                [302.7, 464.6],
+                [308.9, 526.3],
+                [218.3, 535.4]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v8"
+        },
+        {
+            "points": [
+                [215.6, 537.5],
+                [312.4, 532.6],
+                [315.4, 592.5],
+                [218.6, 597.4]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v9"
+        },
+        {
+            "points": [
+                [215.9, 608.5],
+                [313.7, 601.6],
+                [318.1, 664.5],
+                [220.3, 671.4]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v10"
+        },
+        {
+            "points": [
+                [218.4, 676.0],
+                [321.3, 674.0],
+                [322.6, 738.0],
+                [219.7, 740.0]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v11"
+        },
+        {
+            "points": [
+                [216.0, 754.7],
+                [331.6, 751.3],
+                [333.7, 820.8],
+                [218.1, 824.3]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v12"
+        },
+        {
+            "points": [
+                [213.4, 830.6],
+                [332.3, 835.4],
+                [329.6, 903.4],
+                [210.7, 898.6]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v13"
+        },
+        {
+            "points": [
+                [205.7, 905.3],
+                [331.9, 919.2],
+                [323.3, 996.7],
+                [197.1, 982.8]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v14"
+        },
+        {
+            "points": [
+                [191.4, 991.1],
+                [324.1, 1009.8],
+                [312.6, 1091.9],
+                [179.9, 1073.2]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v15"
+        },
+        {
+            "points": [
+                [174.7, 1086.5],
+                [308.0, 1108.0],
+                [293.7, 1196.6],
+                [160.4, 1175.1]
+            ],
+            "flag": {},
+            "group_id": null,
+            "shape_type": "polygon",
+            "label": "v16"
+        }
+    ]
+}
