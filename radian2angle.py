@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 import json
 
-PREFIX = Path("./vetebra_dataset")
+PREFIX = Path("./veterbra_dataset")
 FOLDS = ["f01", "f02", "f03"]
 STARTS = [1, 21, 41]
 
