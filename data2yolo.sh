@@ -2,9 +2,9 @@
 
 
 ## This will clear all images!!
-if [ -d "datasets" ]; then
-    rm -r datasets
-fi
+# if [ -d "datasets" ]; then
+#     rm -r datasets
+# fi
 
 for i in {1..3}; do
     for set in train val; do
