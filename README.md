@@ -23,11 +23,11 @@ pip install -r requirements.txt
 ## Usage
 - Training
 ```sh
-python train.py
+python tools/train.py
 ```
 - Demo
 ```sh
-python demo.py
+python tools/demo.py
 ```
 
 ## Contributing

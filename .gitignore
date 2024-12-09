@@ -1,2 +1,4 @@
 **/.DS_Store
 **/*.cache
+pretrained_weights/yolo11x-obb.pt
+pretrained_weights/yolo11l-obb.pt
