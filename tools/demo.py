@@ -1,137 +1,82 @@
 import gradio as gr
-import torch
-import sys
-import matplotlib.pyplot as plt
-import torch.nn.functional as F
 import numpy as np
-from skimage import measure
-from skimage.segmentation import find_boundaries
-from skimage.io import imread
-import os
+from PIL import Image
 
-sys.path.append(".")
-from modeling.unet import UNet
-from data.transforms.transforms import setup_transform
-
-# bad!
-model = UNet()
-model_path = "./output/1e-4batch2_bce0.5_ERGN/model_final.pt"
-model.load_state_dict(torch.load(model_path, weights_only=True))
-model.eval()
-_, val_transform = setup_transform((384, 160))
+from inference import *
 
 
-def predict(image, mask):
-    transformed = val_transform(image=image, mask=mask)
-    image = transformed["image"].unsqueeze(0)
-    mask = transformed["mask"]
-    pred = F.sigmoid(model(image)).squeeze().detach().numpy()
-    pred = ((pred > 0.5) * 255).astype(np.uint8)
+def predict(image):
+    try:
+        with open(CONFIG, "r") as cfg_file:
+            cfg = yaml.safe_load(cfg_file)
+    except yaml.YAMLError as e:
+        print(e)
 
-    image = image.squeeze().numpy()
-    _, axes = plt.subplots(1, 3, tight_layout=True)
-    for i in range(3):
-        axes[i].axis("off")
-    axes[0].imshow(image, cmap="gray")
-    axes[0].axis("off")
+    # quick override for test
+    cfg["save"] = False
+    cfg["model"] = "runs/l_mosaic0_v0_batch8_epoch200/fold01/train/weights/best.pt"
+    cfg["source"] = image
+    cfg["show_labels"] = False
+    cfg["show_conf"] = False
+    model = YOLO(cfg["model"])
+    result = model.predict(**cfg)[0]
 
-    plot_location(axes[1], image, pred)
-    plot_segmentation(axes[2], image, pred)
+    xywhr = result.obb.xywhr.to("cpu").numpy().copy().tolist()
+    # xywhr = [y for x, y in zip(result.obb.conf, xywhr) if x >= 0.8]
+    xywhr.sort(key=lambda x: x[1])  # sort by y coord
+    angles = [x[4] for x in xywhr]
+    max_angle_diff, idx1, idx2 = get_max_angle_diff(angles, xywhr)
+    angle1 = radian2angle(xywhr[idx1][4])
+    angle2 = radian2angle(xywhr[idx2][4])
+    angle1, angle2 = max(angle1, angle2), min(angle1, angle2)
 
-    pred_labels, pred_num = measure.label(pred, return_num=True)
-    mask_labels, mask_num = measure.label(mask, return_num=True)
+    # prediction
+    result.save("pred.png", conf=False, labels=False)
+    prediction = Image.open("pred.png")
 
-    dice_coefficients = []
-    for i in range(1, mask_num + 1):
-        dc = 0
-        for j in range(1, pred_num + 1):
-            dc = max(dc, calculate_dice_cofficient(pred_labels, mask_labels, i, j))
-        dice_coefficients.append(dc)
+    # image with boxes and liness
+    image=cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    xyxyxyxy = result.obb.xyxyxyxy.to("cpu").numpy().copy().astype(np.int32).tolist()
+    xyxyxyxy = sorted(xyxyxyxy, key=lambda x:x[0][1]) # sort by y of first (x, y)
+    upper, lower = sorted([xyxyxyxy[idx1], xyxyxyxy[idx2]], key=lambda x: x[0][1])
+    draw_box_and_line(image, upper, upper=True)
+    draw_box_and_line(image, lower, upper=False)
+    image_box_line = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image_box_line = Image.fromarray(image)
+    image_box_line.save("box_line.png")
 
-    dcs_formatted = [f"{dc:.2f}:" for dc in dice_coefficients]
-    dc_formatted = f"{np.average(dice_coefficients):.2f}"
+    match max_angle_diff:
+        case x if x > 40:
+            result = "severe scoliosis"
+        case x if x >= 20:
+            result = "moderate scoliosis"
+        case x if x >= 10:
+            result = "mild scoliosis"
+        case x:
+            result = "spinal curve"
 
-    plt.savefig("./result.png")
-    result = imread("./result.png")
-    os.remove("./result.png")
+    return np.concatenate((prediction, image_box_line), axis=1), max_angle_diff, result, angle1, angle2
 
-    return result, mask_num, pred_num, dcs_formatted, dc_formatted
-
-
-def plot_location(interface, image, pred):
-    interface.imshow(image, cmap="gray")
-    # label connected regions of an integer array (1, 2, 3...)
-    # default: 1(8)-connectivity, background = 0
-    pred_labels = measure.label(pred)
-    regions = measure.regionprops(pred_labels)
-    x = [int(r.centroid[0]) for r in regions]
-    y = [int(r.centroid[1]) for r in regions]
-    interface.scatter(y, x, s=2, c="r")
-    interface.axis("off")
-
-
-def plot_segmentation(interface, image, pred):
-    # sobel + watershed, gray2rgb is called, result become darker?
-    # interface.imshow(mark_boundaries(image, pred, mode="inner", color=(1, 0, 0)))
-    boundary = find_boundaries(pred, connectivity=2)
-    interface.imshow(image, cmap="gray")
-    interface.imshow(
-        boundary, cmap="rainbow", alpha=0.5 * boundary, interpolation="nearest"
-    )
-    interface.axis("off")
-
-
-def plot_location(interface, image, pred):
-    interface.imshow(image, cmap="gray")
-    # label connected regions of an integer array (1, 2, 3...)
-    # default: 1(8)-connectivity, background = 0
-    pred_labels = measure.label(pred)
-    regions = measure.regionprops(pred_labels)
-    x = [int(r.centroid[0]) for r in regions]
-    y = [int(r.centroid[1]) for r in regions]
-    interface.scatter(y, x, s=2, c="r")
-    interface.axis("off")
-
-
-def plot_segmentation(interface, image, pred):
-    # sobel + watershed, gray2rgb is called, result become darker?
-    # interface.imshow(mark_boundaries(image, pred, mode="inner", color=(1, 0, 0)))
-    boundary = find_boundaries(pred, connectivity=2)
-    interface.imshow(image, cmap="gray")
-    interface.imshow(
-        boundary, cmap="rainbow", alpha=0.5 * boundary, interpolation="nearest"
-    )
-    interface.axis("off")
-
-
-def calculate_dice_cofficient(pred_labels, mask_labels, i, j):
-    mask_map = mask_labels == i
-    pred_map = pred_labels == j
-
-    smooth = 1.0
-    intersection = (mask_map * pred_map).sum()
-    return (2.0 * intersection + smooth) / (mask_map.sum() + pred_map.sum() + smooth)
-
+def clear_input():
+    return None, "", "", ""
 
 def main():
-    demo = gr.Interface(
-        title="Vertebra Localization and Segmentation",
-        fn=predict,
-        # inputs=gr.Image(image_mode="L", height=500, width=800),
-        inputs=[
-            gr.Image(label="Input", image_mode="L", height=400),
-            gr.Image(label="Ground truth", image_mode="L", height=400),
-        ],
-        outputs=[
-            gr.Image(height=480),
-            gr.Textbox(label="# of vertebra (GT)"),
-            gr.Textbox(label="# of vertebra (Detected)"),
-            gr.Textbox(label="Dice coefficient of each vertebra"),
-            gr.Textbox(label="Average Dice coefficient"),
-        ],
-        allow_flagging="never",
-    )
-    demo.launch()
+    with gr.Blocks() as demo:
+        gr.Markdown("# OCAM:Oriented-Bounding-Box Cobb Angle Measurement for Scoliosis Diagonosis")
+        with gr.Row():
+            input_img = gr.Image(height=600, width=250, type="pil")
+            output_img = gr.Image(height=600, width=500)
+        with gr.Row():
+            clear = gr.Button("clear", min_width=355)
+            submit = gr.Button("submit", min_width=360)
+            cobb_angle = gr.Textbox(label="Cobb angle", min_width=100)
+            result = gr.Textbox(label="Result", min_width=100)
+            max = gr.Textbox(label="Max theata", min_width=100)
+            min = gr.Textbox(label="Min theata", min_width=100)
+
+        submit.click(fn=predict, inputs=[input_img], outputs=[output_img, cobb_angle, result, max, min])
+        clear.click(fn=clear_input, inputs=[], outputs=[output_img, cobb_angle, max, min])
+        demo.launch(share=True)
 
 
 if __name__ == "__main__":

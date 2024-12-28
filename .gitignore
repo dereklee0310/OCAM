@@ -1,4 +1,9 @@
 **/.DS_Store
 **/*.cache
+**/__pycache__
 pretrained_weights/yolo11x-obb.pt
 pretrained_weights/yolo11l-obb.pt
+*.png
+
+runs/*
+!runs/l_mosaic0_v0_batch8_epoch200

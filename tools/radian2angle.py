@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 import json
 
-PREFIX = Path("./veterbra_dataset")
+PREFIX = Path("./labelled_data")
 FOLDS = ["f01", "f02", "f03"]
 STARTS = [1, 21, 41]
 
@@ -55,13 +55,27 @@ for fold, start in zip(FOLDS, STARTS):
 
         radians = [x["robndbox"]["angle"] for x in data["objects"]]
         angles = list(map(lambda x: x * 180 / np.pi, radians))
-        high90 = [x for x in angles if x > 90]
-        low90 = [x for x in angles if x <= 90]
+        high90 = [(i, x) for i, x in enumerate(angles) if x > 90]
+        low90 = [(i, x) for i, x in enumerate(angles) if x <= 90]
 
-        max_angle = max(low90) if low90 else max(high90)
-        min_angle = min(high90) - 180 if high90 else min(low90)
+        if low90:
+            max_idx, max_angle = max(low90, key=lambda x: x[1])
+        else:
+            max_idx, max_angle = max(high90, key=lambda x: x[1])
 
-        result = {"max": max_angle, "min": min_angle, "diff": max_angle - min_angle}
+        if high90:
+            min_idx, min_angle = min(high90, key=lambda x: x[1])
+            min_angle -= 180
+        else:
+            min_idx, min_angle = min(low90, key=lambda x: x[1])
+
+        result = {
+            "max_idx": max_idx,
+            "max": max_angle,
+            "min_idx": min_idx,
+            "min": min_angle,
+            "diff": max_angle - min_angle,
+        }
         print(id, result)
         Path(PREFIX / fold / "angle").mkdir(parents=True, exist_ok=True)
         with open(PREFIX / fold / "angle" / f"00{id:02}.json", "w") as file:
