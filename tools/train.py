@@ -28,7 +28,7 @@ def main():
 
     # 3-fold cross validation
     project_base_dir = Path(train_cfg["project"])
-    project_base_dir.mkdir(parents=True, exist_ok=False)
+    # project_base_dir.mkdir(parents=True, exist_ok=False)
 
     metrics = {
         "avg_mse": 0,
@@ -68,7 +68,7 @@ def main():
             # coords = [y for x, y in zip(result.obb.conf, coords) if x >= 0.8]
             coords.sort(key=lambda x: x[1])  # sort by y coord
             angles = [x[4] for x in coords]
-            max_angle_diffs.append(get_max_angle_diff(angles, coords))
+            max_angle_diffs.append(get_max_angle_diff(angles, coords)[0])
 
         # assume each image has a angle label file :p
         labels = []

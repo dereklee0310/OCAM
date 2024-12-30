@@ -1,9 +1,3 @@
----
-title: OCAM
-app_file: tools/demo.py
-sdk: gradio
-sdk_version: 5.9.1
----
 # Oriented-Bounding-Box Cobb Angle Measurement
 
 ## About The Project

@@ -7,3 +7,5 @@ pretrained_weights/yolo11l-obb.pt
 
 runs/*
 !runs/l_mosaic0_v0_batch8_epoch200
+!runs/s_mosaic0_v0_batch8_epoch200
+.gradio
